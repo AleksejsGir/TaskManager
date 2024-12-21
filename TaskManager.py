@@ -58,15 +58,22 @@ class TaskManager:
         print("Задача добавлена.")
 
     def remove_task(self, index: int):
+        # Начало изменений для SCRUM-10: обработка IndexError и добавление комментария
         if not self.tasks:
             print("Список задач пуст. Удаление невозможно.")
             return
 
-        if 0 <= index < len(self.tasks):
-            removed_task = self.tasks.pop(index)
-            print(f"Задача \"{removed_task.title}\" удалена.")
-        else:
-            print("Неверный индекс.")
+        try:
+            if 0 <= index < len(self.tasks):
+                removed_task = self.tasks.pop(index)
+                print(f"Задача \"{removed_task.title}\" удалена.")
+            else:
+                print("Неверный индекс.")
+        except IndexError:
+            print("Произошла ошибка: индекс выходит за пределы списка задач.")
+        except ValueError:
+            print("Введите корректное число.")
+        # Конец изменений для SCRUM-10
 
     def view_tasks(self):
         if not self.tasks:
@@ -98,15 +105,23 @@ class TaskManager:
         else:
             print("Неверный индекс.")
 
+    # Начало изменений для SCRUM-10: Добавлены методы сохранения и загрузки задач в файл с обработкой ошибок
     def save_to_file(self):
+        # Этот метод сохраняет текущий список задач в файл JSON.
+        # Обработка исключений позволяет предотвратить завершение программы при проблемах с доступом к файлу.
         try:
             with open(self.filename, 'w', encoding='utf-8') as file:
                 json.dump([task.__dict__ for task in self.tasks], file, ensure_ascii=False, indent=4)
             print(f"Список задач сохранен в файл \"{self.filename}\".")
+        except PermissionError:
+            print("Ошибка: недостаточно прав для записи файла.")
         except Exception as e:
             print(f"Ошибка сохранения в файл: {e}")
 
     def load_from_file(self):
+        # Этот метод загружает список задач из JSON файла.
+        # Он использует встроенный модуль json для декодирования содержимого файла в объекты Python.
+        # Обработка ошибок гарантирует, что программа не завершится при некорректных данных.
         try:
             with open(self.filename, 'r', encoding='utf-8') as file:
                 tasks_data = json.load(file)
@@ -115,9 +130,10 @@ class TaskManager:
         except FileNotFoundError:
             print(f"Файл \"{self.filename}\" не найден. Будет создан новый файл при сохранении.")
         except json.JSONDecodeError:
-            print("Ошибка чтения данных из файла.")
+            print("Ошибка чтения данных из файла. Возможно, файл поврежден или имеет некорректный формат JSON.")
         except Exception as e:
             print(f"Произошла ошибка при загрузке: {e}")
+    # Конец изменений для SCRUM-10
 
 
 def validate_name(prompt):
