@@ -13,6 +13,6 @@ Cоздана обновлённая версия программы TaskManager
 << TypeError, ValueError, IndexError, KeyError, AttributeError, FileNotFoundError, JSONDecodeError, PermissionError, OverflowError, RuntimeError >>
 8. !!!Версия TaskManager_Last_version переименована в TaskManager_version.1.0
   
-### Версия 1.1 (TaskManager_Last_version.1.1)
-- Выпущена обновленная новая версия под названием TaskManager_Last_version.1.1
+### Версия 1.1 (TaskManager_version.1.1)
+- Выпущена обновленная новая версия под названием TaskManager_version.1.1
 - Добавлено SCRUM-6
